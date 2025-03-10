@@ -1,6 +1,6 @@
 {
     "name": "akrammi/sprint3-packagist",
-    "description": "This package should not be used; it is for testing purposes only.",
+    "description": "This package should not be used; it is for testing purposes only. The code is from this repo's src folder https://github.com/thephpleague/config ",
     "license": "MIT",
     "authors": [
         {
