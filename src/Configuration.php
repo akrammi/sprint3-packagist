@@ -101,6 +101,26 @@
             }
         }
 
+        /**
+         * {@inheritDoc}
+         * 
+         * @psalm-external-mutation-free
+         */
+        public function get(string $key)
+        {
+            if(\array_key_exists($key, $this->cache)) {
+                return $this->cache[$key];
+            }
+
+            try {
+                $this->build(self::getTopLevelKey($key));
+
+                return $this->finalConfig->has($key);
+            } catch (InvalidPathException | UnknownOptionException $ex) {
+                return false;
+            }
+        }
+
     }
 
 ?>
