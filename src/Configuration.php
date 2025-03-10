@@ -72,6 +72,19 @@
 
             $this->configSchemas[$key] = $schema;
         }
+
+        /**
+         * {@inheritdoc}
+         * 
+         * @psalm-allow-private-mutation
+         */
+        public function merge(array $config = []): void
+        {
+            $this->invalidate();
+
+            $this->userconfig->import($config, DataInterface::REPLACE);
+        }
+
     }
 
 ?>
