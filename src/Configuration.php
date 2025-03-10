@@ -122,6 +122,26 @@
         }
 
         /**
+         * {@inheritDoc}
+         *
+         * @psalm-external-mutation-free
+         */
+        public function exists(string $key): bool
+        {
+            if (\array_key_exists($key, $this->cache)) {
+                return true;
+            }
+
+            try {
+                $this->build(self::getTopLevelKey($key));
+
+                return $this->finalConfig->has($key);
+            } catch (InvalidPathException | UnknownOptionException $ex) {
+                return false;
+            }
+        }
+
+        /**
          * @psalm-mutation-free
          */
         public function reader(): ConfigurationInterface
