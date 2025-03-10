@@ -60,6 +60,18 @@
 
             $this->reader = new ReadOnlyConfiguration($this);
         }
+
+        /**
+         * Registers a new configuration schema at the given top-lelvel key
+         * 
+         * @psalm-allow-private-mutation
+         */
+        public function addSchema(string $key, Schema $schema): void
+        {
+            $this->invalidate();
+
+            $this->configSchemas[$key] = $schema;
+        }
     }
 
 ?>
