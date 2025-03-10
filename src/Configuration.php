@@ -23,7 +23,7 @@
     use Nette\Schema\Processor;
     use Nette\Schema\Schema;
     use Nette\Schema\ValidationException as NetteValidationException;
-    
+
     final class Configuration implements ConfigurationBuilderInterface, ConfigurationInterface
     {
         /** @psalm-readonly */
@@ -48,6 +48,18 @@
 
         /** @psalm-readonly */
         private ConfigurationInterface $reader;
+
+        /**
+         * @param array<string, Schema> $baseSchemas
+         */
+        public function __construct(array $baseSchemas = [])
+        {
+            $this->configSchemas = $baseSchemas;
+            $this->userconfig = new Data();
+            $this->finalConfig = new Data();
+
+            $this->reader = new ReadOnlyConfiguration($this);
+        }
     }
 
 ?>
