@@ -129,6 +129,15 @@
             return $this->reader;
         }
 
+        /**
+         * @psalm-external-mutation-free
+         */
+        private function invalidate(): void
+        {
+            $this->cache = [];
+            $this->finalConfig = new Data();
+        }
+
     }
 
 ?>
