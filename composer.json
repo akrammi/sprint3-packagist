@@ -1,0 +1,19 @@
+{
+    "name": "akrammi/sprint3-packagist",
+    "description": "This package should not be used; it is for testing purposes only.",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Akram Moumen El Idrissi",
+            "email": "akram@gmail.con",
+            "role": "Developer"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Sprint3\\Packagist\\": "src/"
+        }
+    },
+    "minimum-stability": "stable",
+    "require": {}
+}
