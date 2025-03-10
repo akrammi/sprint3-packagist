@@ -138,6 +138,44 @@
             $this->finalConfig = new Data();
         }
 
+        /**
+         * Applies the schema against the configuration to return the final configuration
+         *
+         * @throws ValidationException|UnknownOptionException|InvalidPathException
+         *
+         * @psalm-allow-private-mutation
+         */
+        private function build(string $topLevelKey): void
+        {
+            if ($this->finalConfig->has($topLevelKey)) {
+                return;
+            }
+    
+            if (! isset($this->configSchemas[$topLevelKey])) {
+                throw new UnknownOptionException(\sprintf('Missing config schema for "%s"', $topLevelKey), $topLevelKey);
+            }
+    
+            try {
+                $userData = [$topLevelKey => $this->userConfig->get($topLevelKey)];
+            } catch (DataException $ex) {
+                $userData = [];
+            }
+    
+            try {
+                $schema    = $this->configSchemas[$topLevelKey];
+                $processor = new Processor();
+    
+                $processed = $processor->process(Expect::structure([$topLevelKey => $schema]), $userData);
+                \assert($processed instanceof \stdClass);
+    
+                $this->raiseAnyDeprecationNotices($processor->getWarnings());
+    
+                $this->finalConfig->import(self::convertStdClassesToArrays($processed));
+            } catch (NetteValidationException $ex) {
+                throw new ValidationException($ex);
+            }
+        }
+
     }
 
 ?>
