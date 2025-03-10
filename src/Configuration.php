@@ -121,6 +121,14 @@
             }
         }
 
+        /**
+         * @psalm-mutation-free
+         */
+        public function reader(): ConfigurationInterface
+        {
+            return $this->reader;
+        }
+
     }
 
 ?>
