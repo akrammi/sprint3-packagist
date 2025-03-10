@@ -204,6 +204,35 @@
             return $data;
         }
 
+        /**
+         * @param string[] $warnings
+         */
+        private function raiseAnyDeprecationNotices(array $warnings): void
+        {
+            foreach ($warnings as $warning) {
+                @\trigger_error($warning, \E_USER_DEPRECATED);
+            }
+        }
+
+        /**
+         * @throws InvalidPathException
+         */
+        private static function getTopLevelKey(string $path): string
+        {
+            if (\strlen($path) === 0) {
+                throw new InvalidPathException('Path cannot be an empty string');
+            }
+
+            $path = \str_replace(['.', '/'], '.', $path);
+
+            $firstDelimiter = \strpos($path, '.');
+            if ($firstDelimiter === false) {
+                return $path;
+            }
+
+            return \substr($path, 0, $firstDelimiter);
+        }
+
     }
 
 ?>
