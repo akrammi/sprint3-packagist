@@ -176,6 +176,34 @@
             }
         }
 
+        /**
+         * Recursively converts stdClass instances to arrays
+         *
+         * @phpstan-template T
+         *
+         * @param T $data
+         *
+         * @return mixed
+         *
+         * @phpstan-return ($data is \stdClass ? array<string, mixed> : T)
+         *
+         * @psalm-pure
+         */
+        private static function convertStdClassesToArrays($data)
+        {
+            if ($data instanceof \stdClass) {
+                $data = (array) $data;
+            }
+
+            if (\is_array($data)) {
+                foreach ($data as $k => $v) {
+                    $data[$k] = self::convertStdClassesToArrays($v);
+                }
+            }
+
+            return $data;
+        }
+
     }
 
 ?>
