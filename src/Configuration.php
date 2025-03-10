@@ -85,6 +85,22 @@
             $this->userconfig->import($config, DataInterface::REPLACE);
         }
 
+        /**
+         * {@inheritdoc}
+         * 
+         * @psalm-allow-private-mutation
+         */
+        public function set(string $key, Schema $value): void
+        {
+            $this->invalidate();
+
+            try {
+                $this->userconfig->set($key, $value);
+            } catch (DataException $ex) {
+                throw new UnknownOptionException($ex->getMessage(), $key, (int) $ex->getCode(), $ex);
+            }
+        }
+
     }
 
 ?>
